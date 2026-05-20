@@ -674,11 +674,16 @@
                 <p>يرجى ملء الجدول بالبيانات الصحيحة وسنتصل بك فوراً لتأكيد طلبيتك.</p>
             </div>
 
-            <form id="purchaseForm">
+            <form id="purchaseForm" action="https://api.web3forms.com/submit" method="POST">
+                
+                <input type="hidden" name="access_key" value="d3a6415f-38f6-4505-b778-5a21fa91a329">
+                <input type="hidden" name="subject" value="طلب جديد من متجر Lyra Hair!">
+                <input type="hidden" name="from_name" value="Lyra Hair Store">
+
                 <div class="form-group">
                     <label for="last_name">اللقب <span>*</span></label>
                     <div class="input-wrapper">
-                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="أدخلي اللقب الكامل" required>
+                        <input type="text" id="last_name" name="اللقب" class="form-control" placeholder="أدخلي اللقب الكامل" required>
                         <i class="fa-solid fa-user"></i>
                     </div>
                 </div>
@@ -686,7 +691,7 @@
                 <div class="form-group">
                     <label for="first_name">الاسم <span>*</span></label>
                     <div class="input-wrapper">
-                        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="أدخلي الاسم الأول" required>
+                        <input type="text" id="first_name" name="الاسم" class="form-control" placeholder="أدخلي الاسم الأول" required>
                         <i class="fa-solid fa-user"></i>
                     </div>
                 </div>
@@ -694,7 +699,7 @@
                 <div class="form-group">
                     <label for="phone">رقم الهاتف <span>*</span></label>
                     <div class="input-wrapper">
-                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="رقم الهاتف (مثال: 0661000000)" required>
+                        <input type="tel" id="phone" name="رقم الهاتف" class="form-control" placeholder="رقم الهاتف (مثال: 0661000000)" required>
                         <i class="fa-solid fa-phone"></i>
                     </div>
                 </div>
@@ -702,7 +707,7 @@
                 <div class="form-group">
                     <label for="wilaya">الولاية <span>*</span></label>
                     <div class="input-wrapper">
-                        <input type="text" id="wilaya" name="wilaya" class="form-control" placeholder="اسم الولاية الخاصة بك" required>
+                        <input type="text" id="wilaya" name="الولاية" class="form-control" placeholder="اسم الولاية الخاصة بك" required>
                         <i class="fa-solid fa-map-location-dot"></i>
                     </div>
                 </div>
@@ -710,7 +715,7 @@
                 <div class="form-group">
                     <label for="commune">البلدية <span>*</span></label>
                     <div class="input-wrapper">
-                        <input type="text" id="commune" name="commune" class="form-control" placeholder="اسم البلدية التابع لها" required>
+                        <input type="text" id="commune" name="البلدية" class="form-control" placeholder="اسم البلدية التابع لها" required>
                         <i class="fa-solid fa-location-dot"></i>
                     </div>
                 </div>
@@ -719,7 +724,7 @@
                     <label>خيار التوصيل <span>*</span></label>
                     <div class="delivery-options">
                         <label class="delivery-box">
-                            <input type="radio" name="delivery_type" value="delivery_office" checked>
+                            <input type="radio" name="نوع التوصيل" value="توصيل للمكتب" checked>
                             <span class="custom-radio"></span>
                             <div class="delivery-content">
                                 توصيل للمكتب
@@ -727,7 +732,7 @@
                             </div>
                         </label>
                         <label class="delivery-box">
-                            <input type="radio" name="delivery_type" value="delivery_home">
+                            <input type="radio" name="نوع التوصيل" value="توصيل للمنزل">
                             <span class="custom-radio"></span>
                             <div class="delivery-content">
                                 توصيل للمنزل
@@ -761,12 +766,10 @@
     </div>
 
     <script>
-        // ضع الرابط الذي ستحصل عليه من الخطوة الثانية هنا بين القوسين
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGJloc16U8n-EqfMjmWKZrLoNqArhfxRKXADbkIg1BcD2KtY0uF0s_zdx2YJbtyOnX/exec";
-
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const form = this;
             const submitBtn = document.getElementById('submitBtn');
             const btnText = submitBtn.querySelector('.btn-text');
             const spinner = document.getElementById('btnSpinner');
@@ -775,33 +778,33 @@
             btnText.style.opacity = '0.5';
             spinner.style.display = 'block';
 
-            const formData = new FormData(this);
-            const data = {
-                timestamp: new Date().toLocaleString('ar-DZ'),
-                last_name: formData.get('last_name'),
-                first_name: formData.get('first_name'),
-                phone: formData.get('phone'),
-                wilaya: formData.get('wilaya'),
-                commune: formData.get('commune'),
-                delivery_type: formData.get('delivery_type') === 'delivery_office' ? 'توصيل للمكتب' : 'توصيل للمنزل'
-            };
-fetch('https://script.google.com/macros/s/AKfybyGJloc16U8n-EqfMjmWKZrLoNqArhfxRKXADbkIg1BcD2KtY0uF0s_zdx2YJbtyOnX/exec', {
-                method: 'POST',
-                mode: 'no-cors',
+            const formData = new FormData(form);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            fetch(form.action, {
+                method: form.method,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: json
             })
-            .then(() => {
-                resetButton(submitBtn, btnText, spinner);
-                openModal();
-                document.getElementById('purchaseForm').reset();
+            .then(async (response) => {
+                let res = await response.json();
+                if (response.status == 200) {
+                    openModal();
+                    form.reset();
+                } else {
+                    alert('حدث خطأ: ' + res.message);
+                }
             })
             .catch(error => {
                 console.error('Error!', error);
+                alert('عذراً، حدث مشكلة في الاتصال.');
+            })
+            .then(() => {
                 resetButton(submitBtn, btnText, spinner);
-                openModal(); // تفتح النافذة حتى في حال قيود المتصفح لضمان عدم ضياع العميل
             });
         });
 
