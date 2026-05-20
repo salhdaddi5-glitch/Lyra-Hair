@@ -785,18 +785,7 @@
                 commune: formData.get('commune'),
                 delivery_type: formData.get('delivery_type') === 'delivery_office' ? 'توصيل للمكتب' : 'توصيل للمنزل'
             };
-
-            // للتجربة المحلية قبل وضع رابط جوجل سكريبت
-            if (GOOGLE_SCRIPT_URL === "رابط_جوجل_سكريبت_الخاص_بك") {
-                setTimeout(() => {
-                    resetButton(submitBtn, btnText, spinner);
-                    openModal();
-                    document.getElementById('purchaseForm').reset();
-                }, 1000);
-                return;
-            }
-
-            fetch(GOOGLE_SCRIPT_URL, {
+fetch('https://script.google.com/macros/s/AKfybyGJloc16U8n-EqfMjmWKZrLoNqArhfxRKXADbkIg1BcD2KtY0uF0s_zdx2YJbtyOnX/exec', {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {
