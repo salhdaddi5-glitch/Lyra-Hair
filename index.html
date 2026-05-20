@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyra Hair - مكواة الشعر ENZO GOLD الأصلية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #d4af37; /* لون ذهبي ملكي */
+            --primary-dark: #aa841a;
+            --bg-dark: #0b0b0b;
+            --bg-card: #141414;
+            --text-main: #ffffff;
+            --text-muted: #b3b3b3;
+            --success-color: #27ae60;
+            --accent-red: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* الهيدر وشعار الصفحة */
+        header {
+            background: rgba(11, 11, 11, 0.95);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .trust-badge-header {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* واجهة العرض الرئيسية */
+        .hero {
+            padding: 60px 5% 40px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+            }
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .promo-tag {
+            background: var(--accent-red);
+            color: white;
+            align-self: flex-start;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .hero-title span {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        /* علبة السعر الاحترافية */
+        .price-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #292518 100%);
+            border: 1px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-50%, -50%) rotate(45deg); }
+            100% { transform: translate(50%, 50%) rotate(45deg); }
+        }
+
+        .current-price {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .old-price {
+            font-size: 20px;
+            color: #777;
+            text-decoration: line-through;
+        }
+
+        .cta-btn {
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+            color: #000;
+            font-weight: 700;
+            font-size: 20px;
+            text-align: center;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
+        }
+
+        /* حاوية صور المنتج */
+        .hero-image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-product-img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            object-fit: cover;
+        }
+
+        .stock-badge {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            border-left: 4px solid var(--accent-red);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* مميزات المنتج */
+        .features {
+            background: var(--bg-card);
+            padding: 60px 5%;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 35px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* شريط الثقة السريع */
+        .trust-banner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            padding: 30px 5%;
+            background: #0e0e0e;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .trust-item i {
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        /* قسم استمارة الطلب */
+        .order-section {
+            padding: 60px 5%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background: var(--bg-card);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .form-group label span {
+            color: var(--accent-red);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 45px 14px 15px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        /* خيارات التوصيل المخصصة */
+        .delivery-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .delivery-box {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .delivery-box input {
+            display: none;
+        }
+
+        .delivery-box .custom-radio {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #505050;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .delivery-box input:checked + .custom-radio {
+            border-color: var(--primary-color);
+        }
+
+        .delivery-box input:checked + .custom-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .delivery-box:has(input:checked) {
+            border-color: var(--primary-color);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .delivery-content {
+            display: flex;
+            flex-direction: column;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .delivery-content span {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+            color: #000;
+            border: none;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* نافذة التأكيد المنبثقة (Success Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .success-modal {
+            background: #1a1a1a;
+            border: 2px solid var(--success-color);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(39, 174, 96, 0.1);
+            border: 3px solid var(--success-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: var(--success-color);
+            margin: 0 auto 25px;
+        }
+
+        .success-modal h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .success-modal p {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .close-modal-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* أنيميشن التحميل */
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(0,0,0,0.3);
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            background: #050505;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        footer span {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="Lyra hair.jpg" alt="Lyra Hair Logo" class="logo-img">
+            <span class="logo-text">Lyra Hair</span>
+        </div>
+        <div class="trust-badge-header">
+            <i class="fa-solid fa-shield-halved"></i> متجر موثوق 100%
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="promo-tag">🔥 عرض خاص! مكواة الشعر ENZO GOLD الأصلية 🔥</div>
+            <h1 class="hero-title">💎 شعر ناعم ولامع في دقائق فقط!</h1>
+            
+            <p class="hero-subtitle">
+                تعبتِ من الهيشان والتجاعيد؟ مع <strong>ENZO GOLD</strong> تحصلي على ستايل صالون في دارك بسهولة! النتيجة؟ شعر مستقيم، حريري ويدوم طول اليوم 😍
+            </p>
+
+            <div class="price-box">
+                <div>
+                    <div style="font-size: 14px; color: var(--text-muted);">السعر الحالي</div>
+                    <div class="current-price">4200 دج</div>
+                </div>
+                <div>
+                    <div style="font-size: 14px; color: #777;">بدل سعر أعلى</div>
+                    <div class="old-price">5500دج</div>
+                </div>
+            </div>
+
+            <a href="#order-form" class="cta-btn">
+                <i class="fa-solid fa-basket-shopping"></i> اطلبي الآن قبل ما يفوتك العرض!
+            </a>
+        </div>
+
+        <div class="hero-image-container">
+            <img src="Gold .jpg" alt="ENZO GOLD" class="main-product-img">
+            <div class="stock-badge">
+                <i class="fa-solid fa-hourglass-half"></i> عرض محدود – الكمية راهي قليلة!
+            </div>
+        </div>
+    </section>
+
+    <div class="trust-banner">
+        <div class="trust-item">
+            <i class="fa-solid fa-truck-fast"></i>
+            <span>🚚 توصيل سريع لجميع الولايات</span>
+        </div>
+        <div class="trust-item">
+            <i class="fa-solid fa-box-open"></i>
+            <span>📦 الدفع عند الاستلام</span>
+        </div>
+    </div>
+
+    <section class="features">
+        <h2 class="section-title">💖 علاش تختاري ENZO GOLD؟</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-wand-magic-sparkles feature-icon"></i>
+                <h3>حماية كاملة للشعر</h3>
+                <p>صفائح سيراميك + تورمالين ← حماية كاملة للشعر بدون تقصف.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-bolt feature-icon"></i>
+                <h3>تسخين سريع ⚡</h3>
+                <p>تسخين فائق السرعة في ثوانٍ معدودة لتوفير الوقت.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-temperature-half feature-icon"></i>
+                <h3>تحكم كامل في الحرارة</h3>
+                <p>تحكم ذكي مدمج في الحرارة يناسب جميع أنواع الشعر.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-feather feature-icon"></i>
+                <h3>سهل الاستعمال</h3>
+                <p>تصميم أنيق وخفيف يعطي نعومة ولمعان طبيعي.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="order-section" id="order-form">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>📩 اطلبي الآن قبل نفاد الكمية!</h2>
+                <p>يرجى ملء الجدول بالبيانات الصحيحة وسنتصل بك فوراً لتأكيد طلبيتك.</p>
+            </div>
+
+            <form id="purchaseForm">
+                <div class="form-group">
+                    <label for="last_name">اللقب <span>*</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="أدخلي اللقب الكامل" required>
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">الاسم <span>*</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="أدخلي الاسم الأول" required>
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">رقم الهاتف <span>*</span></label>
+                    <div class="input-wrapper">
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="رقم الهاتف (مثال: 0661000000)" required>
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="wilaya">الولاية <span>*</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" id="wilaya" name="wilaya" class="form-control" placeholder="اسم الولاية الخاصة بك" required>
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="commune">البلدية <span>*</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" id="commune" name="commune" class="form-control" placeholder="اسم البلدية التابع لها" required>
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>خيار التوصيل <span>*</span></label>
+                    <div class="delivery-options">
+                        <label class="delivery-box">
+                            <input type="radio" name="delivery_type" value="delivery_office" checked>
+                            <span class="custom-radio"></span>
+                            <div class="delivery-content">
+                                توصيل للمكتب
+                                <span>الاستلام من مقر شركة الشحن</span>
+                            </div>
+                        </label>
+                        <label class="delivery-box">
+                            <input type="radio" name="delivery_type" value="delivery_home">
+                            <span class="custom-radio"></span>
+                            <div class="delivery-content">
+                                توصيل للمنزل
+                                <span>الشحن مباشرة لباب منزلك</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="btn-text"><i class="fa-solid fa-circle-check"></i> تأكيد الطلب الآن</span>
+                    <div class="spinner" id="btnSpinner"></div>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 لصفحة <span>Lyra Hair</span></p>
+    </footer>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="success-modal">
+            <div class="success-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3>تم تسجيل طلبك بنجاح! 😍</h3>
+            <p>شكراً لثقتك بصفحتنا Lyra Hair. سيقوم فريق خدمة العملاء بالتواصل معك هاتفياً عبر الرقم الذي قمت بإدخاله في أقرب وقت لتأكيد طلبيتك وإرسالها إليك.</p>
+            <button class="close-modal-btn" onclick="closeModal()">موافق</button>
+        </div>
+    </div>
+
+    <script>
+        // ضع الرابط الذي ستحصل عليه من الخطوة الثانية هنا بين القوسين
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGJloc16U8n-EqfMjmWKZrLoNqArhfxRKXADbkIg1BcD2KtY0uF0s_zdx2YJbtyOnX/exec";
+
+        document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const spinner = document.getElementById('btnSpinner');
+            
+            submitBtn.disabled = true;
+            btnText.style.opacity = '0.5';
+            spinner.style.display = 'block';
+
+            const formData = new FormData(this);
+            const data = {
+                timestamp: new Date().toLocaleString('ar-DZ'),
+                last_name: formData.get('last_name'),
+                first_name: formData.get('first_name'),
+                phone: formData.get('phone'),
+                wilaya: formData.get('wilaya'),
+                commune: formData.get('commune'),
+                delivery_type: formData.get('delivery_type') === 'delivery_office' ? 'توصيل للمكتب' : 'توصيل للمنزل'
+            };
+
+            // للتجربة المحلية قبل وضع رابط جوجل سكريبت
+            if (GOOGLE_SCRIPT_URL === "رابط_جوجل_سكريبت_الخاص_بك") {
+                setTimeout(() => {
+                    resetButton(submitBtn, btnText, spinner);
+                    openModal();
+                    document.getElementById('purchaseForm').reset();
+                }, 1000);
+                return;
+            }
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                resetButton(submitBtn, btnText, spinner);
+                openModal();
+                document.getElementById('purchaseForm').reset();
+            })
+            .catch(error => {
+                console.error('Error!', error);
+                resetButton(submitBtn, btnText, spinner);
+                openModal(); // تفتح النافذة حتى في حال قيود المتصفح لضمان عدم ضياع العميل
+            });
+        });
+
+        function resetButton(btn, text, spinner) {
+            btn.disabled = false;
+            text.style.opacity = '1';
+            spinner.style.display = 'none';
+        }
+
+        function openModal() {
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
