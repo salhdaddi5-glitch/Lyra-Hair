@@ -547,12 +547,12 @@
             50% { transform: translateY(-5px); }
         }
 
-        /* إشعار نجاح (Toast) */
+        /* إشعار النجاح (Toast) */
         .toast {
             position: fixed;
             top: 100px;
             right: 50%;
-            transform: translateX(50%) translateY(-100px);
+            transform: translateX(50%) translateY(-120px);
             background: var(--success-color);
             color: white;
             padding: 15px 30px;
@@ -567,11 +567,31 @@
             gap: 10px;
             min-width: 280px;
             justify-content: center;
+            text-align: center;
+        }
+
+        .toast.error {
+            background: var(--accent-red);
         }
 
         .toast.show {
             opacity: 1;
             transform: translateX(50%) translateY(0);
+        }
+
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(0,0,0,0.3);
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         footer {
@@ -788,48 +808,18 @@
         <span>للاستفسار</span>
     </a>
 
-    <!-- إشعار النجاح (Toast) -->
+    <!-- إشعار النجاح -->
     <div class="toast" id="toast">
         <i class="fa-solid fa-circle-check"></i>
         <span id="toastMessage">تم إرسال طلبك بنجاح!</span>
     </div>
 
-    <style>
-        .spinner {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(0,0,0,0.3);
-            border-top: 3px solid #000;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-
     <script>
         // ==========================================
-        // ⚠️ إعدادات مهمة جداً - يجب تعبئتها قبل الاستخدام
+        // ⚠️ مهم جداً: ضع هنا مفتاح التفعيل الذي وصلك في رسالة واتساب من CallMeBot
         // ==========================================
-        
-        // رقم واتساب التاجر (رقمك) بصيغة دولية بدون + أو 00
         const WHATSAPP_NUMBER = "213671746345";
-        
-        // API Key من CallMeBot (مجاني) - انظر التعليمات أدناه
-        const CALLMEBOT_API_KEY = "PUT_YOUR_API_KEY_HERE";
-        
-        // ==========================================
-        // 📌 كيفية الحصول على API Key من CallMeBot (دقيقة واحدة فقط):
-        // 1. افتح الرابط: https://www.callmebot.com/whatsapp-api/
-        // 2. أدخل رقمك: 213671746345
-        // 3. اكتب الرسالة: "Test" ثم اضغط "Get my API Key"
-        // 4. ستصلك رسالة واتساب من CallMeBot فيها API Key
-        // 5. انسخ الـ API Key وضعه بين علامتي التنصيص أعلاه
-        // ==========================================
+        const CALLMEBOT_API_KEY = "ضع_أرقام_المفتاح_هنا";
 
         function changeQty(change) {
             const qtyInput = document.getElementById('quantity');
@@ -839,10 +829,11 @@
             qtyInput.value = val;
         }
 
-        function showToast(message, type = 'success') {
+        function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             toastMessage.textContent = message;
+            toast.classList.toggle('error', isError);
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -894,38 +885,25 @@
             btnText.style.opacity = '0.5';
             spinner.style.display = 'block';
 
-            // إرسال الطلب صامتاً عبر CallMeBot API إلى واتساب التاجر
-            const formData = new URLSearchParams();
-            formData.append('phone', WHATSAPP_NUMBER);
-            formData.append('apikey', CALLMEBOT_API_KEY);
-            formData.append('text', message);
+            // ✅ الإرسال الصامت إلى واتساب (بدون فتح واتساب للزبون)
+            const whatsappURL = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_NUMBER}&apikey=${CALLMEBOT_API_KEY}&text=${encodeURIComponent(message)}`;
 
-            fetch('https://api.callmebot.com/whatsapp.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(result => {
-                submitBtn.disabled = false;
-                btnText.style.opacity = '1';
-                spinner.style.display = 'none';
-                
-                if (result.includes('queued') || result.includes('ok') || response.status === 200) {
-                    showToast('✅ تم إرسال طلبك بنجاح! سنتواصل معك قريباً', 'success');
+            fetch(whatsappURL, { method: 'GET', mode: 'no-cors' })
+                .then(() => {
+                    submitBtn.disabled = false;
+                    btnText.style.opacity = '1';
+                    spinner.style.display = 'none';
+                    showToast('✅ تم إرسال طلبك بنجاح! سنتواصل معك قريباً');
                     document.getElementById('purchaseForm').reset();
                     document.getElementById('quantity').value = 1;
-                } else {
-                    showToast('⚠️ حدث خطأ، حاول مرة أخرى', 'error');
-                    console.log('Response:', result);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                submitBtn.disabled = false;
-                btnText.style.opacity = '1';
-                spinner.style.display = 'none';
-                showToast('❌ مشكلة في الاتصال، تأكد من الإنترنت', 'error');
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    submitBtn.disabled = false;
+                    btnText.style.opacity = '1';
+                    spinner.style.display = 'none';
+                    showToast('❌ مشكلة في الاتصال، تأكد من الإنترنت', true);
+                });
         });
     </script>
 </body>
