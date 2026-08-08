@@ -512,7 +512,6 @@
             font-weight: 700;
         }
 
-        /* زر واتساب العائم للاستفسار */
         .whatsapp-float {
             position: fixed;
             bottom: 25px;
@@ -547,7 +546,6 @@
             50% { transform: translateY(-5px); }
         }
 
-        /* إشعار النجاح (Toast) */
         .toast {
             position: fixed;
             top: 100px;
@@ -592,6 +590,60 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        #adminPanel {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 15px;
+            left: 15px;
+            max-width: 420px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px;
+            z-index: 5000;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+
+        #adminPanel h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #adminPanel p {
+            font-size: 13px;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+
+        #adminPanel button {
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary-color);
+            color: #000;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+        }
+
+        #adminPanel pre {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            min-height: 40px;
+            direction: ltr;
+            text-align: left;
         }
 
         footer {
@@ -814,12 +866,24 @@
         <span id="toastMessage">تم إرسال طلبك بنجاح!</span>
     </div>
 
+    <!-- لوحة فحص التاجر -->
+    <div id="adminPanel">
+        <h4>🔧 لوحة فحص التاجر</h4>
+        <p id="keyStatus"></p>
+        <button onclick="testSheet()">📊 إرسال طلبية تجريبية لجدول غوغل</button>
+        <button onclick="testWhatsApp()">📲 إرسال رسالة تجريبية للواتساب</button>
+        <button onclick="testEmail()">📧 إرسال نسخة تجريبية للإيميل</button>
+        <pre id="adminResult">...</pre>
+    </div>
+
     <script>
         // ==========================================
-        // ⚠️ مهم جداً: ضع هنا مفتاح التفعيل الذي وصلك في رسالة واتساب من CallMeBot
+        // ⚙️ الإعدادات (الجاهزة)
         // ==========================================
         const WHATSAPP_NUMBER = "213671746345";
         const CALLMEBOT_API_KEY = "ضع_أرقام_المفتاح_هنا";
+        const WEB3FORMS_KEY = "d3a6415f-38f6-4505-8f6a-47377fe78937";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6S9jV_0xZT3V9JM1DUMGZZ0ExtvP8xcDb4mwGCVBSNlwqhLUtqXLmVKlt6Bs7D6KX/exec";
 
         function changeQty(change) {
             const qtyInput = document.getElementById('quantity');
@@ -840,6 +904,35 @@
             }, 4000);
         }
 
+        function sendToGoogleSheet(orderData) {
+            if (!GOOGLE_SCRIPT_URL.startsWith('https://')) return;
+            return fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(orderData)
+            }).catch(err => console.log('Sheet error:', err));
+        }
+
+        function sendEmailBackup(messageText) {
+            return fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    access_key: WEB3FORMS_KEY,
+                    subject: '🛍️ طلب جديد من متجر Lyra Hair',
+                    from_name: 'Lyra Hair Store',
+                    message: messageText
+                })
+            }).catch(err => console.log('Email backup error:', err));
+        }
+
+        function sendWhatsApp(messageText) {
+            if (CALLMEBOT_API_KEY.includes('ضع')) return;
+            const url = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_NUMBER}&apikey=${CALLMEBOT_API_KEY}&text=${encodeURIComponent(messageText)}`;
+            return fetch(url, { method: 'GET', mode: 'no-cors' }).catch(err => console.log('WA error:', err));
+        }
+
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -856,7 +949,18 @@
             const unitPrice = 4200;
             const totalPrice = unitPrice * parseInt(quantity);
 
-            // بناء الرسالة المنظمة
+            const orderData = {
+                name: firstName + ' ' + lastName,
+                phone: phone,
+                phone2: phone2 || '-',
+                wilaya: wilaya,
+                commune: commune,
+                address: address,
+                delivery: deliveryType,
+                quantity: quantity,
+                total: totalPrice + ' دج'
+            };
+
             let message = `🛍️ *طلب جديد من متجر Lyra Hair*\n`;
             message += `━━━━━━━━━━━━━━━━━━━━\n`;
             message += `💎 *المنتج:* مكواة ENZO GOLD الأصلية\n`;
@@ -885,26 +989,80 @@
             btnText.style.opacity = '0.5';
             spinner.style.display = 'block';
 
-            // ✅ الإرسال الصامت إلى واتساب (بدون فتح واتساب للزبون)
-            const whatsappURL = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_NUMBER}&apikey=${CALLMEBOT_API_KEY}&text=${encodeURIComponent(message)}`;
+            sendToGoogleSheet(orderData);
+            sendEmailBackup(message);
+            sendWhatsApp(message);
 
-            fetch(whatsappURL, { method: 'GET', mode: 'no-cors' })
-                .then(() => {
-                    submitBtn.disabled = false;
-                    btnText.style.opacity = '1';
-                    spinner.style.display = 'none';
-                    showToast('✅ تم إرسال طلبك بنجاح! سنتواصل معك قريباً');
-                    document.getElementById('purchaseForm').reset();
-                    document.getElementById('quantity').value = 1;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    submitBtn.disabled = false;
-                    btnText.style.opacity = '1';
-                    spinner.style.display = 'none';
-                    showToast('❌ مشكلة في الاتصال، تأكد من الإنترنت', true);
-                });
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                btnText.style.opacity = '1';
+                spinner.style.display = 'none';
+                showToast('✅ تم إرسال طلبك بنجاح! سنتواصل معك قريباً');
+                document.getElementById('purchaseForm').reset();
+                document.getElementById('quantity').value = 1;
+            }, 800);
         });
+
+        // ==========================================
+        // لوحة فحص التاجر
+        // ==========================================
+        if (window.location.hash === '#admin') {
+            document.getElementById('adminPanel').style.display = 'block';
+            const keyStatus = document.getElementById('keyStatus');
+            let status = '';
+            status += GOOGLE_SCRIPT_URL.startsWith('https://') ? '✅ جدول غوغل: مربوط<br>' : '❌ جدول غوغل: الرابط ما محطوطش<br>';
+            status += CALLMEBOT_API_KEY.includes('ضع') ? '❌ واتساب: المفتاح ما محطوطش (اختياري)' : '✅ واتساب: المفتاح موجود';
+            keyStatus.innerHTML = status;
+        }
+
+        function testSheet() {
+            const res = document.getElementById('adminResult');
+            if (!GOOGLE_SCRIPT_URL.startsWith('https://')) {
+                res.textContent = '❌ رابط جدول غوغل ما محطوطش!';
+                return;
+            }
+            res.textContent = '⏳ إرسال طلبية تجريبية...';
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ name: 'تجربة تجريبية', phone: '0600000000', phone2: '-', wilaya: 'الجزائر', commune: 'سيدي محمد', address: '-', delivery: 'توصيل للمكتب', quantity: 1, total: '4200 دج' })
+            }).then(() => {
+                res.textContent = '✅ تم الإرسال! افتح جدول غوغل الآن، سطر جديد لازم يبان.';
+            }).catch(() => {
+                res.textContent = '❌ خطأ في الاتصال';
+            });
+        }
+
+        function testWhatsApp() {
+            const res = document.getElementById('adminResult');
+            if (CALLMEBOT_API_KEY.includes('ضع')) {
+                res.textContent = '❌ واتساب ما مفعّلش. أرسل "I allow callmebot to send me messages" للرقم +34 694 25 79 52';
+                return;
+            }
+            res.textContent = '⏳ إرسال...';
+            const url = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_NUMBER}&apikey=${CALLMEBOT_API_KEY}&text=${encodeURIComponent('✅ تجربة: بوابة واتساب Lyra Hair تعمل!')}`;
+            fetch(url).then(r => r.text()).then(t => { res.textContent = 'الرد: ' + t; }).catch(() => { res.textContent = '⚠️ تم الإرسال في الخلفية. افحص الواتساب.'; });
+        }
+
+        function testEmail() {
+            const res = document.getElementById('adminResult');
+            res.textContent = '⏳ إرسال إيميل تجريبي...';
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    access_key: WEB3FORMS_KEY,
+                    subject: '🔧 تجربة - Lyra Hair',
+                    message: '✅ الإيميل الاحتياطي يعمل بنجاح'
+                })
+            })
+            .then(r => r.json())
+            .then(j => {
+                res.textContent = j.success ? '✅ الإيميل خدام!' : '❌ خطأ: ' + j.message;
+            })
+            .catch(() => { res.textContent = '❌ مشكلة في الاتصال'; });
+        }
     </script>
 </body>
 </html>
