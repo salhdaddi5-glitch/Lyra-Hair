@@ -11,7 +11,7 @@
     
     <style>
         :root {
-            --primary-color: #d4af37; /* لون ذهبي ملكي */
+            --primary-color: #d4af37;
             --primary-dark: #aa841a;
             --bg-dark: #0b0b0b;
             --bg-card: #141414;
@@ -36,7 +36,6 @@
             overflow-x: hidden;
         }
 
-        /* الهيدر وشعار الصفحة */
         header {
             background: rgba(11, 11, 11, 0.95);
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
@@ -82,7 +81,6 @@
             font-weight: 600;
         }
 
-        /* واجهة العرض الرئيسية */
         .hero {
             padding: 60px 5% 40px;
             display: grid;
@@ -141,7 +139,6 @@
             margin-bottom: 25px;
         }
 
-        /* علبة السعر الاحترافية */
         .price-box {
             background: linear-gradient(135deg, #1a1a1a 0%, #292518 100%);
             border: 1px solid var(--primary-color);
@@ -206,7 +203,6 @@
             box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
         }
 
-        /* حاوية صور المنتج */
         .hero-image-container {
             position: relative;
             display: flex;
@@ -234,7 +230,6 @@
             font-weight: 600;
         }
 
-        /* مميزات المنتج */
         .features {
             background: var(--bg-card);
             padding: 60px 5%;
@@ -297,7 +292,6 @@
             color: var(--text-muted);
         }
 
-        /* شريط الثقة السريع */
         .trust-banner {
             display: flex;
             flex-wrap: wrap;
@@ -322,7 +316,6 @@
             font-size: 24px;
         }
 
-        /* قسم استمارة الطلب */
         .order-section {
             padding: 60px 5%;
             max-width: 700px;
@@ -398,7 +391,6 @@
             box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
         }
 
-        /* خيارات التوصيل المخصصة */
         .delivery-options {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -487,87 +479,99 @@
             box-shadow: 0 7px 20px rgba(212, 175, 55, 0.5);
         }
 
-        /* نافذة التأكيد المنبثقة (Success Modal) */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
+        .quantity-wrapper {
+            display: flex;
             align-items: center;
-            z-index: 2000;
-            padding: 20px;
-            backdrop-filter: blur(5px);
+            gap: 10px;
         }
 
-        .success-modal {
-            background: #1a1a1a;
-            border: 2px solid var(--success-color);
-            border-radius: 20px;
-            max-width: 500px;
-            width: 100%;
-            padding: 40px 30px;
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-dark);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qty-input {
+            width: 70px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            padding: 10px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
         }
 
-        .modal-overlay.active {
+        /* زر واتساب العائم للاستفسار */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 999;
             display: flex;
-        }
-
-        .success-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(39, 174, 96, 0.1);
-            border: 3px solid var(--success-color);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 40px;
-            color: var(--success-color);
-            margin: 0 auto 25px;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
         }
 
-        .success-modal h3 {
+        .whatsapp-float:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.7);
+        }
+
+        .whatsapp-float i {
             font-size: 24px;
-            margin-bottom: 15px;
         }
 
-        .success-modal p {
-            color: var(--text-muted);
-            font-size: 16px;
-            margin-bottom: 25px;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
-        .close-modal-btn {
+        /* إشعار نجاح (Toast) */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 50%;
+            transform: translateX(50%) translateY(-100px);
             background: var(--success-color);
             color: white;
-            border: none;
-            padding: 12px 35px;
-            font-size: 16px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 280px;
+            justify-content: center;
         }
 
-        /* أنيميشن التحميل */
-        .spinner {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(0,0,0,0.3);
-            border-top: 3px solid #000;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(50%) translateY(0);
         }
 
         footer {
@@ -577,6 +581,7 @@
             border-top: 1px solid rgba(255,255,255,0.05);
             color: var(--text-muted);
             font-size: 14px;
+            margin-bottom: 80px;
         }
 
         footer span {
@@ -671,14 +676,10 @@
         <div class="form-container">
             <div class="form-header">
                 <h2>📩 اطلبي الآن قبل نفاد الكمية!</h2>
-                <p>يرجى ملء الجدول بالبيانات الصحيحة وسنتصل بك فوراً لتأكيد طلبيتك.</p>
+                <p>يرجى ملء الجدول بالبيانات الصحيحة وسنتواصل معك فوراً لتأكيد طلبيتك.</p>
             </div>
 
-            <form id="purchaseForm" action="https://api.web3forms.com/submit" method="POST">
-<input type="hidden" name="access_key"value="d3a6415f-38f6-4505-8f6a-47377fe78937">
-                <input type="hidden" name="subject" value="طلب جديد من متجر Lyra Hair!">
-                <input type="hidden" name="from_name" value="Lyra Hair Store">
-
+            <form id="purchaseForm">
                 <div class="form-group">
                     <label for="last_name">اللقب <span>*</span></label>
                     <div class="input-wrapper">
@@ -704,6 +705,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="phone2">رقم الهاتف الثاني (اختياري)</label>
+                    <div class="input-wrapper">
+                        <input type="tel" id="phone2" name="رقم الهاتف الثاني" class="form-control" placeholder="رقم ثانوي إن وجد">
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="wilaya">الولاية <span>*</span></label>
                     <div class="input-wrapper">
                         <input type="text" id="wilaya" name="الولاية" class="form-control" placeholder="اسم الولاية الخاصة بك" required>
@@ -716,6 +725,23 @@
                     <div class="input-wrapper">
                         <input type="text" id="commune" name="البلدية" class="form-control" placeholder="اسم البلدية التابع لها" required>
                         <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">العنوان / الموقع بالتفصيل <span>*</span></label>
+                    <div class="input-wrapper">
+                        <input type="text" id="address" name="العنوان" class="form-control" placeholder="الحي، الشارع، أي علامة مميزة..." required>
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">الكمية <span>*</span></label>
+                    <div class="quantity-wrapper">
+                        <button type="button" class="qty-btn" onclick="changeQty(-1)">-</button>
+                        <input type="number" id="quantity" name="الكمية" class="qty-input" value="1" min="1" required>
+                        <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
                     </div>
                 </div>
 
@@ -753,22 +779,113 @@
         <p>جميع الحقوق محفوظة © 2026 لصفحة <span>Lyra Hair</span></p>
     </footer>
 
-    <div class="modal-overlay" id="successModal">
-        <div class="success-modal">
-            <div class="success-icon">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <h3>تم تسجيل طلبك بنجاح! 😍</h3>
-            <p>شكراً لثقتك بصفحتنا Lyra Hair. سيقوم فريق خدمة العملاء بالتواصل معك هاتفياً عبر الرقم الذي قمت بإدخاله في أقرب وقت لتأكيد طلبيتك وإرسالها إليك.</p>
-            <button class="close-modal-btn" onclick="closeModal()">موافق</button>
-        </div>
+    <!-- زر واتساب العائم للاستفسار -->
+    <a href="https://wa.me/213671746345?text=%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%86%D8%AF%D9%8A%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1" 
+       class="whatsapp-float" 
+       target="_blank" 
+       aria-label="للاستفسار عبر واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>للاستفسار</span>
+    </a>
+
+    <!-- إشعار النجاح (Toast) -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMessage">تم إرسال طلبك بنجاح!</span>
     </div>
 
+    <style>
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(0,0,0,0.3);
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
     <script>
+        // ==========================================
+        // ⚠️ إعدادات مهمة جداً - يجب تعبئتها قبل الاستخدام
+        // ==========================================
+        
+        // رقم واتساب التاجر (رقمك) بصيغة دولية بدون + أو 00
+        const WHATSAPP_NUMBER = "213671746345";
+        
+        // API Key من CallMeBot (مجاني) - انظر التعليمات أدناه
+        const CALLMEBOT_API_KEY = "PUT_YOUR_API_KEY_HERE";
+        
+        // ==========================================
+        // 📌 كيفية الحصول على API Key من CallMeBot (دقيقة واحدة فقط):
+        // 1. افتح الرابط: https://www.callmebot.com/whatsapp-api/
+        // 2. أدخل رقمك: 213671746345
+        // 3. اكتب الرسالة: "Test" ثم اضغط "Get my API Key"
+        // 4. ستصلك رسالة واتساب من CallMeBot فيها API Key
+        // 5. انسخ الـ API Key وضعه بين علامتي التنصيص أعلاه
+        // ==========================================
+
+        function changeQty(change) {
+            const qtyInput = document.getElementById('quantity');
+            let val = parseInt(qtyInput.value) || 1;
+            val += change;
+            if (val < 1) val = 1;
+            qtyInput.value = val;
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const form = this;
+
+            const lastName = document.getElementById('last_name').value.trim();
+            const firstName = document.getElementById('first_name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const phone2 = document.getElementById('phone2').value.trim();
+            const wilaya = document.getElementById('wilaya').value.trim();
+            const commune = document.getElementById('commune').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const quantity = document.getElementById('quantity').value;
+            const deliveryType = document.querySelector('input[name="نوع التوصيل"]:checked').value;
+
+            const unitPrice = 4200;
+            const totalPrice = unitPrice * parseInt(quantity);
+
+            // بناء الرسالة المنظمة
+            let message = `🛍️ *طلب جديد من متجر Lyra Hair*\n`;
+            message += `━━━━━━━━━━━━━━━━━━━━\n`;
+            message += `💎 *المنتج:* مكواة ENZO GOLD الأصلية\n`;
+            message += `━━━━━━━━━━━━━━━━━━━━\n`;
+            message += `👤 *الاسم الكامل:* ${firstName} ${lastName}\n`;
+            message += `📱 *رقم الهاتف:* ${phone}\n`;
+            if (phone2) {
+                message += `📞 *رقم ثانوي:* ${phone2}\n`;
+            }
+            message += `━━━━━━━━━━━━━━━━━━━━\n`;
+            message += `📍 *الولاية:* ${wilaya}\n`;
+            message += `🏘️ *البلدية:* ${commune}\n`;
+            message += `🏠 *الموقع/العنوان:* ${address}\n`;
+            message += `━━━━━━━━━━━━━━━━━━━━\n`;
+            message += `🚚 *نوع التوصيل:* ${deliveryType}\n`;
+            message += `📦 *الكمية:* ${quantity}\n`;
+            message += `💰 *المبلغ الإجمالي:* ${totalPrice} دج\n`;
+            message += `━━━━━━━━━━━━━━━━━━━━\n`;
+            message += `✅ _طلب جديد بانتظار التأكيد_`;
+
             const submitBtn = document.getElementById('submitBtn');
             const btnText = submitBtn.querySelector('.btn-text');
             const spinner = document.getElementById('btnSpinner');
@@ -777,49 +894,39 @@
             btnText.style.opacity = '0.5';
             spinner.style.display = 'block';
 
-            const formData = new FormData(form);
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
+            // إرسال الطلب صامتاً عبر CallMeBot API إلى واتساب التاجر
+            const formData = new URLSearchParams();
+            formData.append('phone', WHATSAPP_NUMBER);
+            formData.append('apikey', CALLMEBOT_API_KEY);
+            formData.append('text', message);
 
-            fetch(form.action, {
-                method: form.method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: json
+            fetch('https://api.callmebot.com/whatsapp.php', {
+                method: 'POST',
+                body: formData
             })
-            .then(async (response) => {
-                let res = await response.json();
-                if (response.status == 200) {
-                    openModal();
-                    form.reset();
+            .then(response => response.text())
+            .then(result => {
+                submitBtn.disabled = false;
+                btnText.style.opacity = '1';
+                spinner.style.display = 'none';
+                
+                if (result.includes('queued') || result.includes('ok') || response.status === 200) {
+                    showToast('✅ تم إرسال طلبك بنجاح! سنتواصل معك قريباً', 'success');
+                    document.getElementById('purchaseForm').reset();
+                    document.getElementById('quantity').value = 1;
                 } else {
-                    alert('حدث خطأ: ' + res.message);
+                    showToast('⚠️ حدث خطأ، حاول مرة أخرى', 'error');
+                    console.log('Response:', result);
                 }
             })
             .catch(error => {
-                console.error('Error!', error);
-                alert('عذراً، حدث مشكلة في الاتصال.');
-            })
-            .then(() => {
-                resetButton(submitBtn, btnText, spinner);
+                console.error('Error:', error);
+                submitBtn.disabled = false;
+                btnText.style.opacity = '1';
+                spinner.style.display = 'none';
+                showToast('❌ مشكلة في الاتصال، تأكد من الإنترنت', 'error');
             });
         });
-
-        function resetButton(btn, text, spinner) {
-            btn.disabled = false;
-            text.style.opacity = '1';
-            spinner.style.display = 'none';
-        }
-
-        function openModal() {
-            document.getElementById('successModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('successModal').classList.remove('active');
-        }
     </script>
 </body>
 </html>
